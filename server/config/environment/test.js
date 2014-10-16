@@ -5,6 +5,6 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/monitoringui-test'
+    uri: 'mongodb://10.9.241.212/comsmonitoring-dev'
   }
 };
