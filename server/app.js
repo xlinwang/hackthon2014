@@ -9,10 +9,19 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express = require('express');
 var mongoose = require('mongoose');
+var mysql = require('mysql');
 var config = require('./config/environment');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
+
+var mysqlconnectionpool=mysql.createPool({
+	connectionLimit : config.mysql.connectionLimit,
+	host:config.mysql.host,
+	user:config.mysql.user,
+	password:config.mysql.password,
+	database:config.mysql.database
+});
 
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
