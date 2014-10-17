@@ -20,4 +20,5 @@ module.exports = function(app) {
     .get(function(req, res) {
       res.sendfile(app.get('appPath') + '/index.html');
     });
+
 };
