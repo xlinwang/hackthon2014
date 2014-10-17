@@ -22,6 +22,7 @@ var mysqlconnectionpool=mysql.createPool({
 	password:config.mysql.password,
 	database:config.mysql.database
 });
+var schedule = require('node-schedule');
 
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }

@@ -17,7 +17,8 @@
     "mongoose": "~3.8.8",
     "composable-middleware": "^0.3.0",
     "connect-mongo": "^0.4.1",
-    "mysql": "^2.5.2"
+    "mysql": "^2.5.2",
+    "node-schedule": "^0.1.13"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
