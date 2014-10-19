@@ -23,3 +23,15 @@ exports.insertEvent=function(date,module,usecase,value,dimension1,dimension2,dim
 	});
 	return deffered.promise;
 }
+
+exports.getDistinctEvents=function() {
+	var deffered=q.defer();
+	connectionpool.query('SELECT distinct module,usecase,dimension1,dimension2,dimension3 FROM EVENTS',function(err,result){
+		if(err) {
+			deffered.reject(err);
+		} else {
+			deffered.resolve(result);
+		}
+	});
+	return deffered.promise;
+}
