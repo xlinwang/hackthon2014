@@ -5,7 +5,7 @@
 var CronJob = require('cron').CronJob;
 var exec = require('child_process').exec;
 
-var rest = require('./httpHandler');
+//var rest = require('./httpHandler');
 function execute(command, callback){
     exec(command, function(error, stdout, stderr){ callback(stdout); });
 };
@@ -18,7 +18,7 @@ function execute(command, callback){
 
 exports.register = function(filelocation, callback){
     var finalCommand = 'curl -X POST http://appmon.vip.ebay.com/pig/script/'
-        + "testQQ.pig"
+        + "testPig.pig"
         + ' -H "Content-Type: application/octet-stream" --data-binary '+ '@'
         + filelocation;
     console.log(finalCommand);
