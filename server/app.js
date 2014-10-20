@@ -11,6 +11,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var mysql = require('mysql');
 var config = require('./config/environment');
+var pig = require('./components/pig');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
@@ -31,11 +32,18 @@ alerts.start();
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
 
+// Start Pig Scheduler
+pig.start("testPig", 10, {"colo":null}, function(msg){log(msg)});
+
 // Setup server
 var app = express();
 var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
+
+// exports public folder
+// app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Start server
 server.listen(config.port, config.ip, function () {
