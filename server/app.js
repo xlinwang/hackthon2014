@@ -36,6 +36,11 @@ if(config.seedDB) { require('./config/seed'); }
 // Start Pig Scheduler
 pig.start("testPig", function(msg){console.log(msg)});
 
+require('./components/alertdef')
+var newAlertDef=new AlertDef({module:'anand'});
+newAlertDef.save(function(err,alertdef){
+	console.log(alertdef);
+})
 // Setup server
 var app = express();
 logger.debug("Overriding 'Express' logger");
