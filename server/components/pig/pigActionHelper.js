@@ -4,6 +4,7 @@
 
 var CronJob = require('cron').CronJob;
 var exec = require('child_process').exec;
+var logger = require("../../utils/logger");
 
 //var rest = require('./httpHandler');
 function execute(command, callback){
@@ -21,7 +22,7 @@ exports.register = function(filelocation, callback){
         + "testPig.pig"
         + ' -H "Content-Type: application/octet-stream" --data-binary '+ '@'
         + filelocation;
-    console.log(finalCommand);
+    logger.info(finalCommand);
     execute(finalCommand,
         function(res){
             callback(res);
@@ -32,7 +33,7 @@ exports.register = function(filelocation, callback){
 exports.unregister = function(fileName, callback){
     var finalCommand = 'curl -X DELETE http://appmon.vip.ebay.com/pig/script/'
         + fileName;
-    console.log(finalCommand);
+    logger.info(finalCommand);
     execute(finalCommand,
         function(res){
             callback(res);
@@ -43,7 +44,7 @@ exports.unregister = function(fileName, callback){
 exports.retrieve = function(fileName, callback){
     var finalCommand = 'curl -X GET http://appmon.vip.ebay.com/pig/script/'
         + fileName;
-    console.log(finalCommand);
+    logger.info(finalCommand);
     execute(finalCommand,
         function(res){
             callback(res);
@@ -56,7 +57,7 @@ exports.submit = function(fileName, data, callback){
         + fileName
         + ' -H "Content-Type: application/json" '
         + '-d ' + "'"+ JSON.stringify(data) + "'";
-    console.log(finalCommand);
+    logger.info(finalCommand);
     execute(finalCommand,
         function(res){
             callback(res);
@@ -67,7 +68,7 @@ exports.submit = function(fileName, data, callback){
 exports.retrieveInput = function(uuid, callback){
     var finalCommand = 'curl -X GET http://appmon.vip.ebay.com/pig/request/'
         + uuid;
-    console.log(finalCommand);
+    logger.info(finalCommand);
     execute(finalCommand,
         function(res){
             callback(res);
@@ -79,7 +80,7 @@ exports.status = function(uuid, callback){
     var finalCommand = 'curl -X GET http://appmon.vip.ebay.com/pig/request/'
         + uuid
         + '/status';
-    console.log(finalCommand);
+    logger.info(finalCommand);
     execute(finalCommand,
         function(res){
             callback(res);
@@ -91,7 +92,7 @@ exports.retrieveOutput = function(uuid, callback){
     var finalCommand = 'curl -X GET http://appmon.vip.ebay.com/pig/request/'
         + uuid
         + '/output';
-    console.log(finalCommand);
+    logger.info(finalCommand);
     execute(finalCommand,
         function(res){
             callback(res);
@@ -103,7 +104,7 @@ exports.retrieveStats = function(uuid, callback){
     var finalCommand = 'curl -X GET http://appmon.vip.ebay.com/pig/request/'
         + uuid
         + '/stats';
-    console.log(finalCommand);
+    logger.info(finalCommand);
     execute(finalCommand,
         function(res){
             callback(res);

@@ -1,7 +1,7 @@
 /**
  * Created by xwang17 on 10/16/14.
  */
-
+var logger = require("../../utils/logger");
 var CronJob = require('cron').CronJob;
 var events = require('events');
 var pig = require('./pigActionHelper');
@@ -15,11 +15,15 @@ function execute(command, callback){
 var eventEmitter = new events.EventEmitter();
 
 function log(msg){
-    console.log(msg);
+    logger.info(msg)
 }
 
 function eventHandler(data, callback){
-    callback(data);
+    if (callback && typeof(callback) === "function") {
+        callback(data);
+    } else {
+        log(callback)
+    }
 }
 
 function errorHandler(errorMsg, callback){
@@ -41,26 +45,16 @@ function validFile(fileName){
 };
 
 function generateLocation(fileName){
-    ////pig.register("./public/pigScripts/testPig.pig",cb);
 
     var fileLocation = './server/public/pig/'+fileName+'.pig';
     return fileLocation;
 }
 
-var data = {"inputParameters":
-{   "startDate":"2014/10/10-12:00",
-    "endDate":"2014/10/11-13:00",
-    "env":"null",
-    "pool":"r1ordersvc",
-    "machine":"null",
-    "colo":"null",
-    "sampling":"1"}
-};
+
 
 
 
 eventEmitter.on('error', errorHandler);
-eventEmitter.on('succeed', eventHandler);
 
 var jobId;
 function runScript(fileName, params, callback){
@@ -69,7 +63,7 @@ function runScript(fileName, params, callback){
         pig.register(generateLocation(fileName), function(res){
             log(res)
             if(isRegisterSucceed(res)){
-                pig.submit(fileName+'.pig', data, function(res){
+                pig.submit(fileName+'.pig', params.data, function(res){
                     log(res);
                     if(isSubmitSucceed(res)){
                         var timerId = setInterval(function () {
@@ -78,18 +72,22 @@ function runScript(fileName, params, callback){
                                 log(status);
                                 if(status === "SUBMITTED"){
                                     log("processing ...");
-                                }else if(status === "SUCCEED"){
-                                    pig.retrieveOutput(res, function(data){
-                                        log(data);
-                                        eventEmitter("succeed", data, callback);
-                                    });
+                                }else if(status === "SUCCEEDED"){
                                     clearInterval(timerId);
+                                    pig.retrieveOutput(res, function(data){
+//                                        log(data);
+                                        if (callback && typeof(callback) === "function") {
+                                            callback(data);
+                                        } else {
+                                            log(callback)
+                                        }
+                                    });
                                 }else{
                                     clearInterval(timerId);
                                     eventEmitter('error', 'job failed', callback);
                                 }
                             });
-                        }, 500000);
+                        }, 10000);
                     }else{
                         eventEmitter('error', 'submit failed', callback);
                     }
@@ -104,17 +102,16 @@ function runScript(fileName, params, callback){
 
 }
 
-function runPeriod(fileName, params, callback){
-    var job = new CronJob('0 */30 * * * *',
-        function(){
+function runPeriod(fileName, period, params, callback){
+    log(JSON.stringify(params));
+//    log(period);
+    var job = new CronJob({cronTime : period,
+        onTick : function(){
             log("run once ...");
             runScript(fileName, params, callback);
         },
-        function () {
-            console.log('complete');
-        },
-        true /* Start the job right now */,
-        "America/Los_Angeles" /* Time zone of this job. */
+        start:true ,
+        timeZone: "America/Los_Angeles"}
     );
 }
 

@@ -7,6 +7,7 @@
 // Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+var logger = require("./utils/logger");
 var express = require('express');
 var mongoose = require('mongoose');
 var mysql = require('mysql');
@@ -33,10 +34,12 @@ alerts.start();
 if(config.seedDB) { require('./config/seed'); }
 
 // Start Pig Scheduler
-pig.start("testPig", 10, {"colo":null}, function(msg){log(msg)});
+pig.start("testPig", function(msg){console.log(msg)});
 
 // Setup server
 var app = express();
+logger.debug("Overriding 'Express' logger");
+app.use(require('morgan')({ "stream": logger.stream }));
 var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
