@@ -3,8 +3,6 @@
 angular.module('monitoringUiApp')
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
-      });
+      .when('/alerts', {templateUrl:'app/alerts/alerts.html',
+      	controller: 'AlertsCtrl'});
   });

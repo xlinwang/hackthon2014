@@ -5,7 +5,24 @@ angular.module('monitoringUiApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
-    }];
+    },
+    {
+      'title': 'COMS',
+      'link': '/coms'
+    },
+    {
+      'title': 'COSMOS',
+      'link': '/cosmos'
+    },
+    {
+      'title': 'Transaction API',
+      'link': '/trxapi'
+    },
+    {
+      'title': 'Alerts',
+      'link': '/alerts'
+    }
+    ];
 
     $scope.isCollapsed = true;
 
