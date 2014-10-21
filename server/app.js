@@ -13,6 +13,8 @@ var mongoose = require('mongoose');
 var mysql = require('mysql');
 var config = require('./config/environment');
 var pig = require('./components/pig');
+var pigParams = require('./components/pig/pigParams');
+var cbs = require('./components/pig/processor');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
@@ -34,7 +36,8 @@ alerts.start();
 if(config.seedDB) { require('./config/seed'); }
 
 // Start Pig Scheduler
-pig.start("testPig", function(msg){console.log(msg)});
+pig.start("testPig", cbs.cosmosCallBack, "0 */1 * * * *", pigParams.cosmosTestPig);
+//pig.start("apiPig", cbs.apiCallBack, "0 */5 * * * *");
 
 require('./components/alertdef')
 var newAlertDef=new AlertDef({module:'anand'});
