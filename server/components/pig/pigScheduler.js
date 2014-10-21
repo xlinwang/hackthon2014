@@ -60,7 +60,7 @@ var jobId;
 function runScript(fileName, params, callback){
     if(validFile(fileName)){
         log("valid file");
-        pig.register(generateLocation(fileName), function(res){
+        pig.register(fileName, generateLocation(fileName), function(res){
             log(res)
             if(isRegisterSucceed(res)){
                 params.data.inputParameters.startDate = utils.genStartDate();

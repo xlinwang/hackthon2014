@@ -24,8 +24,8 @@ var pigParams = {
             "inputParameters":
             {   "startDate":'2014/10/20-11:06',
                 "endDate":'2014/10/20-12:06',
-                "env":"null",
-                "pool":"r1ordersvc",
+                "env":"prod",
+                "pool":"v3apicore",
                 "machine":"null",
                 "colo":"null",
                 "sampling":"1"
@@ -36,3 +36,4 @@ var pigParams = {
 }
 
 module.exports.cosmosTestPig = pigParams.cosmosTestPig;
+module.exports.apiTestPig = pigParams.apiTestPig;
