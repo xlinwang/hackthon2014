@@ -25,7 +25,7 @@ function apiCallBack () {
             var counts = words[1];
 
             var eventsdb=require('../eventsdb');
-            eventsdb.insertEvent("2014-01-01 00:00:00", "TAPI", "Error",counts, name, "", "", "", 120);
+            eventsdb.insertEvent("2014-01-01 00:00:00", "TAPI", "Error",counts, name, "", "", "");
 
             log(name);
             log(counts);
