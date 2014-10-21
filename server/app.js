@@ -42,6 +42,7 @@ if(config.seedDB) { require('./config/seed'); }
 pig.start("testPig", cbs.cosmosCallBack, "0 */1 * * * *", pigParams.cosmosTestPig);
 //pig.start("apiPig", cbs.apiCallBack, "0 */5 * * * *");
 
+
 // Setup server
 var app = express();
 logger.debug("Overriding 'Express' logger");

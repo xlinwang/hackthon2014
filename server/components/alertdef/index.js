@@ -1,3 +1,3 @@
-var alertdef=require(./alertdef);
-
-module.exports.alertdef=alertdef;
+'use strict';
+var def=require('./alertdef');
+module.exports.AlertDef=def.AlertDef;

@@ -11,7 +11,7 @@ var AlertDefSchema = new Schema({
 	dimension3: String,
 	aggregateType: String,
 	duration: Number,
-	treshold: NUmber,
+	treshold: Number,
 	email:String
 });
 
