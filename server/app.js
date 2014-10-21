@@ -35,6 +35,9 @@ alerts.start();
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
 
+//test apicallback
+//cbs.apiCallBack();
+
 // Start Pig Scheduler
 pig.start("testPig", cbs.cosmosCallBack, "0 */1 * * * *", pigParams.cosmosTestPig);
 //pig.start("apiPig", cbs.apiCallBack, "0 */5 * * * *");
