@@ -17,9 +17,12 @@ exports.insertEvent=function(date,module,usecase,value,dimension1,dimension2,dim
 	connectionpool.query('INSERT INTO EVENTS SET ?',params,function(err,result){
 		if(err) {
 			deffered.reject(err);
+            console.log(err);
 		} else {
 			deffered.resolve(result);
-		}
+            console.log(result);
+
+        }
 	});
 	return deffered.promise;
 }
