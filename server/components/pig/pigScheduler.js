@@ -11,7 +11,7 @@ function execute(command, callback){
 };
 
 
-
+var utils = require('./utils')
 var eventEmitter = new events.EventEmitter();
 
 function log(msg){
@@ -63,6 +63,9 @@ function runScript(fileName, params, callback){
         pig.register(generateLocation(fileName), function(res){
             log(res)
             if(isRegisterSucceed(res)){
+                params.data.inputParameters.startDate = utils.genStartDate();
+                params.data.inputParameters.endDate = utils.genEndDate();
+                log(JSON.stringify(params));
                 pig.submit(fileName+'.pig', params.data, function(res){
                     log(res);
                     if(isSubmitSucceed(res)){
@@ -110,7 +113,7 @@ function runPeriod(fileName, period, params, callback){
             log("run once ...");
             runScript(fileName, params, callback);
         },
-        start:true ,
+        start:true,
         timeZone: "America/Los_Angeles"}
     );
 }
