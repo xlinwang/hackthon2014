@@ -10,6 +10,7 @@ var AlertDefSchema = new Schema({
 	dimension2: String,
 	dimension3: String,
 	aggregateType: String,
+	operator: String,
 	duration: Number,
 	treshold: Number,
 	email:String
