@@ -2,7 +2,7 @@
 var NewAlertCtrl = function ($scope, $modalInstance,$rootScope) {
 
   
-  $scope.saveAlert = function () {
+  $scope.save = function () {
     var newalert={
       "module":module.value,
     };
@@ -45,5 +45,6 @@ angular.module('monitoringUiApp')
       }).error(function(data){
       });
      });
+    
   };
   });
