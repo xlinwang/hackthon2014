@@ -39,8 +39,9 @@ if(config.seedDB) { require('./config/seed'); }
 //cbs.apiCallBack();
 
 // Start Pig Scheduler
-pig.start("testPig", cbs.cosmosCallBack, "0 */1 * * * *", pigParams.cosmosTestPig);
-//pig.start("apiPig", cbs.apiCallBack, "0 */5 * * * *");
+pig.start("testPig", cbs.cosmosCallBack, "0 */10 * * * *", pigParams.cosmosTestPig);
+//pig.start("Errorcounts", cbs.apiErrorCallBack, "0 */30 * * * *", pigParams.apiTestPig);
+//pig.start("Reqtimeout120", cbs.cosmosCallBack, "0 */30 * * * *", pigParams.apiTestPig);
 
 
 // Setup server
