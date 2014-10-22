@@ -31,7 +31,7 @@ var eventsdb=require('./components/eventsdb');
 eventsdb.setConnectionPool(mysqlconnectionpool);
 
 var alerts=require('./components/alerts');
-//alerts.start();
+alerts.start();
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
 
@@ -39,7 +39,7 @@ if(config.seedDB) { require('./config/seed'); }
 //cbs.apiCallBack();
 
 // Start Pig Scheduler
-//pig.start("testPig", cbs.cosmosCallBack, "0 */1 * * * *", pigParams.cosmosTestPig);
+pig.start("testPig", cbs.cosmosCallBack, "0 */1 * * * *", pigParams.cosmosTestPig);
 //pig.start("apiPig", cbs.apiCallBack, "0 */5 * * * *");
 
 

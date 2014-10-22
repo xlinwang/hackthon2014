@@ -19,8 +19,7 @@ exports.create = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  alertdefds.update(req.params.id,req.body).then(function(numberAffected){
+  alertdefds.updateAlertDefinitionById(req.params.id,req.body).then(function(numberAffected){
   	return res.json(200,numberAffected);
   },function(err){
 	return res.send(500, err);
@@ -29,5 +28,9 @@ exports.update = function(req, res) {
 
 // Deletes a thing from the DB.
 exports.destroy = function(req, res) {
- 
+ 	alertdefds.deleteAlertDef(req.params.id).then(function(){
+	  	return res.json(200);
+	  },function(err){
+		return res.send(500, err);
+	  });
 };
