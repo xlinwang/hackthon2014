@@ -1,1 +1,61 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
+<div class="container" ng-controller="AlertsCtrl">
+	<script type="text/ng-template" id="myModalContent.html">
+	    <div class="modal-header">
+	        <h3 class="modal-title">Define New Alert</h3>
+	    </div>
+	    <div class="modal-body">
+	    	<form role="form" class="form-horizontal" name="newanalysisform" novalidate>
+	    		<div class="form-group">
+	    			<label for="analysisname" class="col-sm-2 control-label">Analysis Name</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="analysisname" placeholder="Analysis Name" ng-model="analysisname">
+				    </div>
+				 </div>
+	    	</form>
+	    </div>
+	    <div class="modal-footer">
+	        <button class="btn btn-primary" ng-click="startanalysis()">Save</button>
+	        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+	    </div>
+	</script>
+
+  <div class="row">
+    <div class="col-lg-12">
+    	<button class="btn btn-primary pull-right" ng-click="openNewAlertModal()">New Alert</button>
+    	<table class="table table-condensed table-hover">
+    		<tr>
+    			<th>Module</th>
+    			<th>Usecase</th>
+    			<th>Dimension1</th>
+    			<th>Dimension2</th>
+    			<th>Dimension3</th>
+    			<th>Aggregate Type</th>
+    			<th>Treshold</th>
+    			<th>Duration</th>
+    			<th>Email</th>
+    			<th>Description</th>
+    			<th colspan="2">Actions</th>
+    		</tr>
+    		<tr ng-repeat="alertdef in alertdefs">
+    		<td>{{alertdef.module}}</td>
+    		<td>{{$alertdef.usecase}}</td>
+    		<td>{{alertdef.dimension1}}</td>
+    		<td>{{alertdef.dimension2}}</td>
+    		<td>{{alertdef.dimension3}}</td>
+    		<td>{{alertdef.aggregateType}}</td>
+    		<td>{{alertdef.treshold}}</td>
+    		<td>{{alertdef.duration}}</td>
+    		<td>{{alertdef.email}}</td>
+    		<td>For {{alertdef.module}} {{alertdef.usecase}} {{alertdef.dimension1}} if {{alertdef.aggregateType}} of value is greater than {{alertdef.treshold}} in {{alertdef.duration}} then send email to {{alertdef.email}}</td>
+    		<td>
+    			<button class="btn btn-primary">Edit</button>
+    		</td>
+    		<td>
+    			<button class="btn btn-danger">Delete</button>
+    		</td>
+    		</tr>
+    	</table>
+    </div>
+  </div>
+</div>
