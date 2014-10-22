@@ -4,7 +4,7 @@ var utils = require('./utils');
 var logger = require("../../utils/logger");
 
 var defaultParams = {
-    period:"0 */1 * * * *",
+    period:"0 */30 * * * *",
     data:{
         "inputParameters":
         {   "startDate":utils.genStartDate(),
@@ -29,7 +29,7 @@ function start(script, callback, period, params) {
     }
     log("period: " + period);
     var finalParams = generateParams(params);    // generate new params
-    log("finalPs: " +  JSON.stringify(finalParams));
+//    log("finalPs: " +  JSON.stringify(finalParams));
     scheduler.runPeriod(script, period, finalParams, callback);
 
 }

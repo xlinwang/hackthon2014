@@ -35,11 +35,8 @@ alerts.start();
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
 
-//test apicallback
-//cbs.apiCallBack();
-
-// Start Pig Scheduler
-pig.start("testPig", cbs.cosmosCallBack, "0 */10 * * * *", pigParams.cosmosTestPig);
+// Start Pig Scheduler before server up
+pig.start("testPig", cbs.cosmosCallBack, "0 */5 * * * *", pigParams.cosmosTestPig);
 //pig.start("Errorcounts", cbs.apiErrorCallBack, "0 */30 * * * *", pigParams.apiTestPig);
 //pig.start("Reqtimeout120", cbs.cosmosCallBack, "0 */30 * * * *", pigParams.apiTestPig);
 

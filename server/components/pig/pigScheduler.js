@@ -79,7 +79,7 @@ function runScript(fileName, params, callback){
                                     }else if(status === "SUCCEEDED"){
                                         // clear and callback
                                         clearInterval(timerId);
-                                        pig.retrieveOutput(res, function(data){
+                                        pig.retrieveOutput(jobId, function(data){
                                             if (callback && typeof(callback) === "function") {
                                                 callback(data);
                                             } else {
@@ -88,7 +88,7 @@ function runScript(fileName, params, callback){
                                         });
                                     }else{
                                         clearInterval(timerId);
-                                        eventEmitter('error', 'job failed', callback);
+                                        log("PIG -- Job "+jobId+" failed!");
                                     }
                                 });
                             }, 10000);
