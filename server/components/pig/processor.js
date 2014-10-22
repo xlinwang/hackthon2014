@@ -2,22 +2,12 @@
  * Created by xwang17 on 10/21/14.
  */
 
+var utils = require('./utils');
 
-
-function apiCallBack () {
-
-    var data = "AddOrder,102"+'\n'+"GetOrders,273200"
-
+function apiErrorCallBack (data) {
     function cb(data){
-
-        var log = function(m){
-            console.log(m);
-        }
-        log(data);
         var rows = data.split('\n');
-        log(rows);
         var i = 0;
-        log(rows.length);
         for(i; i<rows.length; i++){
             var row = rows[i];
             var words = row.split(',');
@@ -25,15 +15,31 @@ function apiCallBack () {
             var counts = words[1];
 
             var eventsdb=require('../eventsdb');
-            eventsdb.insertEvent("2014-01-01 00:00:00", "TAPI", "Error",counts, name, "", "", "");
+            eventsdb.insertEvent(utils.genCurrDate, "TAPI", "Error",counts, name, "", "", "");
 
-            log(name);
-            log(counts);
         }
     }
     cb(data);
-
 }
+function apiTimeoutCallBack (data) {
+    function cb(data){
+        var rows = data.split('\n');
+        var i = 0;
+        for(i; i<rows.length; i++){
+            var row = rows[i];
+            var words = row.split(',');
+            var name = words[0];
+            var counts = words[1];
+
+            var eventsdb=require('../eventsdb');
+            eventsdb.insertEvent(utils.genCurrDate, "TAPI", "Timeout",counts, name, "", "", "");
+
+        }
+    }
+    cb(data);
+}
+
+
 
 function cosmosCallBack (data) {
 
@@ -53,4 +59,5 @@ function cosmosCallBack (data) {
     })}
 
 module.exports.cosmosCallBack = cosmosCallBack;
-module.exports.apiCallBack = apiCallBack;
+module.exports.apiErrorCallBack = apiErrorCallBack;
+module.exports.apiTimeoutCallBack = apiTimeoutCallBack;

@@ -26,7 +26,7 @@ var pigParams = {
                 "endDate":'2014/10/20-12:06',
                 "env":"prod",
                 "pool":"v3apicore",
-                "machine":"null",
+                "machine":"phx,slc,sjc",
                 "colo":"null",
                 "sampling":"1"
             }

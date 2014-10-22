@@ -59,46 +59,49 @@ eventEmitter.on('error', errorHandler);
 var jobId;
 function runScript(fileName, params, callback){
     if(validFile(fileName)){
-        log("valid file");
-        pig.register(fileName, generateLocation(fileName), function(res){
-            log(res)
-            if(isRegisterSucceed(res)){
-                params.data.inputParameters.startDate = utils.genStartDate();
-                params.data.inputParameters.endDate = utils.genEndDate();
-                log(JSON.stringify(params));
-                pig.submit(fileName+'.pig', params.data, function(res){
-                    log(res);
-                    if(isSubmitSucceed(res)){
-                        var timerId = setInterval(function () {
-                            jobId = res;
-                            pig.status(res, function(status){
-                                log(status);
-                                if(status === "SUBMITTED"){
-                                    log("processing ...");
-                                }else if(status === "SUCCEEDED"){
-                                    clearInterval(timerId);
-                                    pig.retrieveOutput(res, function(data){
-//                                        log(data);
-                                        if (callback && typeof(callback) === "function") {
-                                            callback(data);
-                                        } else {
-                                            log(callback)
-                                        }
-                                    });
-                                }else{
-                                    clearInterval(timerId);
-                                    eventEmitter('error', 'job failed', callback);
-                                }
-                            });
-                        }, 10000);
-                    }else{
-                        eventEmitter('error', 'submit failed', callback);
-                    }
-                });
-            }else{
-                eventEmitter('error', "register failed", callback);
-            }
-        });
+        pig.unregister(fileName, function(res){
+            log(res + " : " + fileName+".pig");
+            pig.register(fileName, generateLocation(fileName), function(res){
+                log("PIG -- "+"Registered file: " +res)
+                if(isRegisterSucceed(res)){
+                    params.data.inputParameters.startDate = utils.genStartDate();
+                    params.data.inputParameters.endDate = utils.genEndDate();
+                    log("PIG -- "+"Job submitting: " + JSON.stringify(params));
+                    pig.submit(fileName+'.pig', params.data, function(jobIdRes){
+                        log("PIG -- "+"job " + jobIdRes + " has been submitted");
+                        if(isSubmitSucceed(jobIdRes)){
+                            var timerId = setInterval(function () {
+                                jobId = jobIdRes;
+                                pig.status(jobIdRes, function(status){
+                                    log("PIG -- "+"job "+jobId + " status: " + status);
+                                    if(status === "SUBMITTED"){
+                                        // continure
+                                    }else if(status === "SUCCEEDED"){
+                                        // clear and callback
+                                        clearInterval(timerId);
+                                        pig.retrieveOutput(res, function(data){
+                                            if (callback && typeof(callback) === "function") {
+                                                callback(data);
+                                            } else {
+                                                log(callback)
+                                            }
+                                        });
+                                    }else{
+                                        clearInterval(timerId);
+                                        eventEmitter('error', 'job failed', callback);
+                                    }
+                                });
+                            }, 10000);
+                        }else{
+                            eventEmitter('error', 'submit failed', callback);
+                        }
+                    });
+                }else{
+                    eventEmitter('error', "register failed", callback);
+                }
+            });
+        })
+
     }else{
         eventEmitter('error', "invalid file", callback);
     }

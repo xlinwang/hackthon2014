@@ -32,7 +32,7 @@ exports.register = function(filename, filelocation, callback){
 
 exports.unregister = function(fileName, callback){
     var finalCommand = 'curl -X DELETE http://appmon.vip.ebay.com/pig/script/'
-        + fileName;
+        + fileName+'.pig';
     logger.info(finalCommand);
     execute(finalCommand,
         function(res){
