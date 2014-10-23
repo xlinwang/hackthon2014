@@ -15,7 +15,7 @@ module.exports = {
   	port: 3306,
   	user: 'root',
   	password: 'gvMw7TTcnRsTyyGxDedVwcKFd3RFds2V3WPA',
-  	database: 'coms_monitoring_dev',
+  	database: 'coms_monitoring',
   	connectionLimit: 3
   }
 };

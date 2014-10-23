@@ -25,10 +25,25 @@ var pigParams = {
             {   "startDate":'2014/10/20-11:06',
                 "endDate":'2014/10/20-12:06',
                 "env":"prod",
-                "pool":"v3apicore",
-                "machine":"phx,slc,sjc",
+                "pool":"v3apixocore",
+                "machine":"null",
                 "colo":"null",
-                "sampling":"1"
+                "sampling":"10"
+            }
+
+        }
+    },
+
+    apiIntlPig:{
+        data:{
+            "inputParameters":
+            {   "startDate":'2014/10/20-11:06',
+                "endDate":'2014/10/20-12:06',
+                "env":"prod",
+                "pool":"v3apixointl",
+                "machine":"null",
+                "colo":"null",
+                "sampling":"10"
             }
 
         }
@@ -37,3 +52,4 @@ var pigParams = {
 
 module.exports.cosmosTestPig = pigParams.cosmosTestPig;
 module.exports.apiTestPig = pigParams.apiTestPig;
+module.exports.apiIntlPig = pigParams.apiIntlPig;
