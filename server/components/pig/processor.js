@@ -12,11 +12,12 @@ function apiErrorCallBack (data) {
             var row = rows[i];
             var words = row.split(',');
             var name = words[0];
-            var counts = words[1];
+            var siteId = words[1];
+            var version = words[2];
+            var counts = words[3];
 
             var eventsdb=require('../eventsdb');
-            eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "Error",counts, name, "", "", "");
-
+            eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "CriticalError",counts, name, siteId, version, "");
         }
     }
     cb(data);
@@ -29,11 +30,12 @@ function apiTimeoutCallBack (data) {
             var row = rows[i];
             var words = row.split(',');
             var name = words[0];
-            var counts = words[1];
+            var siteId = words[1];
+            var version = words[2];
+            var counts = words[3];
 
             var eventsdb=require('../eventsdb');
-            eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "Timeout",counts, name, "", "", "");
-
+            eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "Timeout",counts, name, siteId, version, "");
         }
     }
     cb(data);
@@ -41,7 +43,7 @@ function apiTimeoutCallBack (data) {
 
 
 
-function cosmosCallBack (data) {
+function cosmosLongUrl3SecCallBack (data) {
 
     console.log(data);
 
@@ -55,7 +57,28 @@ function cosmosCallBack (data) {
             var counts = words[1];
             if(counts !== undefined && counts != ""){
                 var eventsdb=require('../eventsdb');
-                eventsdb.insertEvent(utils.genCurrDate(), "COSMOS", "LongUrl",counts, name, "", "", "");
+                eventsdb.insertEvent(utils.genCurrDate(), "COSMOS", "LongUrl3Sec",counts, name, "", "", "");
+            }
+        }
+    }
+    writeIntoDB(data)
+}
+
+function cosmosLongUrl4SecCallBack (data) {
+
+    console.log(data);
+
+    function writeIntoDB(data){
+        var rows = data.split('\n');
+        var i = 0;
+        for (i; i<rows.length; i++) {
+            var row = rows[i];
+            var words = row.split(',');
+            var name = words[0];
+            var counts = words[1];
+            if(counts !== undefined && counts != ""){
+                var eventsdb=require('../eventsdb');
+                eventsdb.insertEvent(utils.genCurrDate(), "COSMOS", "LongUrl4Sec",counts, name, "", "", "");
             }
         }
     }
@@ -79,6 +102,7 @@ function writeIntoFileCallBack (data) {
     })
 }
 
-module.exports.cosmosCallBack = cosmosCallBack;
+module.exports.cosmosLongUrl3SecCallBack = cosmosLongUrl3SecCallBack;
+module.exports.cosmosLongUrl4SecCallBack = cosmosLongUrl4SecCallBack;
 module.exports.apiErrorCallBack = apiErrorCallBack;
 module.exports.apiTimeoutCallBack = apiTimeoutCallBack;
