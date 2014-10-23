@@ -19,18 +19,18 @@ module.exports.start=function() {
 };
 
 function checkDB(){
-	var sqlQuery = 'select EVENT_DATE, MODULE, DIMENSION1, DURATION, COUNT(DIMENSION1) as count from coms_monitoring.EVENTS where EVENT_DATE >= DATE_SUB(NOW(),INTERVAL 0.5 HOUR) and DURATION > 60 group by MODULE, DIMENSION1 having count>2 ;'
-
-	// check
-	eventsdb.getConnectionPool().query(sqlQuery, function(err, rows, fields) {
-  		if (err) throw err;
-  		prepareEmailNotification(rows[0].DURATION)
-  		for( var i in rows) {
-  			console.log(rows[i]);	
-
-  		}
-  		
-	});
+//	var sqlQuery = 'select EVENT_DATE, MODULE, DIMENSION1, DURATION, COUNT(DIMENSION1) as count from coms_monitoring.EVENTS where EVENT_DATE >= DATE_SUB(NOW(),INTERVAL 0.5 HOUR) and DURATION > 60 group by MODULE, DIMENSION1 having count>2 ;'
+//
+//	// check
+//	eventsdb.getConnectionPool().query(sqlQuery, function(err, rows, fields) {
+//  		if (err) throw err;
+//  		prepareEmailNotification(rows[0].DURATION)
+//  		for( var i in rows) {
+//  			console.log(rows[i]);
+//
+//  		}
+//
+//	});
 }
 
 function prepareEmailNotification(duration){
