@@ -31,7 +31,7 @@ var eventsdb=require('./components/eventsdb');
 eventsdb.setConnectionPool(mysqlconnectionpool);
 
 var alerts=require('./components/alerts');
-alerts.start();
+//alerts.start();
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
 
@@ -42,7 +42,6 @@ if(config.seedDB) { require('./config/seed'); }
 pig.start("testPig", cbs.cosmosCallBack, "0 */10 * * * *", pigParams.cosmosTestPig);
 //pig.start("Errorcounts", cbs.apiErrorCallBack, "0 */30 * * * *", pigParams.apiTestPig);
 //pig.start("Reqtimeout120", cbs.cosmosCallBack, "0 */30 * * * *", pigParams.apiTestPig);
-
 
 // Setup server
 var app = express();

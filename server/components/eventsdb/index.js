@@ -86,3 +86,15 @@ exports.getDistinctDimension3=function() {
 	});
 	return deffered.promise;
 }
+
+exports.executeQuery=function(sql,bindparams) {
+	var defered=q.defer();
+	connectionpool.query(sql,bindparams,function(err,result){
+		if(err) {
+			defered.reject(err);
+		} else {
+			defered.resolve(result);
+		}
+	});
+	return defered.promise;
+}
