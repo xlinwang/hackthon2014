@@ -31,7 +31,7 @@ var eventsdb=require('./components/eventsdb');
 eventsdb.setConnectionPool(mysqlconnectionpool);
 
 var alerts=require('./components/alerts');
-//alerts.start();
+alerts.start();
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
 
