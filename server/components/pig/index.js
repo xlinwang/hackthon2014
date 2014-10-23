@@ -30,8 +30,8 @@ var defaultParams = {
 function startAll(){
 
     // COSMOS
-    start("longUrl3Sec", cbs.cosmosLongUrl3SecCallBack, "0 */50 * * * *", pigParams.cosmosTestPig);
-    start("longUrl4Sec", cbs.cosmosLongUrl4SecCallBack, "0 */50 * * * *", pigParams.cosmosTestPig);
+    start("longUrl3Sec", cbs.cosmosLongUrl3SecCallBack, "0 */30 * * * *", pigParams.cosmosTestPig);
+    start("longUrl4Sec", cbs.cosmosLongUrl4SecCallBack, "0 */30 * * * *", pigParams.cosmosTestPig);
 
     // API
     start("Errorcounts", cbs.apiErrorCallBack, "0 */55 * * * *", pigParams.apiTestPig);

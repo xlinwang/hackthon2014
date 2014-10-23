@@ -13,6 +13,7 @@ var mongoose = require('mongoose');
 var mysql = require('mysql');
 var config = require('./config/environment');
 var pig = require('./components/pig');
+var path = require('path');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
