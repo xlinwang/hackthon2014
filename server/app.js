@@ -45,7 +45,7 @@ require('./config/express')(app);
 require('./routes')(app);
 
 // exports public folder
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Start server
