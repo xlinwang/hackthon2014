@@ -50,10 +50,6 @@ function generateLocation(fileName){
     return fileLocation;
 }
 
-
-
-
-
 eventEmitter.on('error', errorHandler);
 
 var jobId;
