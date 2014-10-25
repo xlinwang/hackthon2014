@@ -2,41 +2,90 @@
  * Created by xwang17 on 10/21/14.
  */
 
+var utils = require('./utils');
 
-
-function apiCallBack () {
-
-    var data = "AddOrder,102"+'\n'+"GetOrders,273200"
-
+function apiErrorCallBack (data) {
     function cb(data){
-
-        var log = function(m){
-            console.log(m);
-        }
-        log(data);
         var rows = data.split('\n');
-        log(rows);
         var i = 0;
-        log(rows.length);
         for(i; i<rows.length; i++){
             var row = rows[i];
             var words = row.split(',');
             var name = words[0];
-            var counts = words[1];
+            var siteId = words[1];
+            var version = words[2];
+            var counts = words[3];
 
             var eventsdb=require('../eventsdb');
-            eventsdb.insertEvent("2014-01-01 00:00:00", "TAPI", "Error",counts, name, "", "", "");
-
-            log(name);
-            log(counts);
+            eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "CriticalError",counts, name, siteId, version, "");
         }
     }
     cb(data);
+}
+function apiTimeoutCallBack (data) {
+    function cb(data){
+        var rows = data.split('\n');
+        var i = 0;
+        for(i; i<rows.length; i++){
+            var row = rows[i];
+            var words = row.split(',');
+            var name = words[0];
+            var siteId = words[1];
+            var version = words[2];
+            var counts = words[3];
 
+            var eventsdb=require('../eventsdb');
+            eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "Timeout",counts, name, siteId, version, "");
+        }
+    }
+    cb(data);
 }
 
-function cosmosCallBack (data) {
 
+
+function cosmosLongUrl3SecCallBack (data) {
+
+    console.log(data);
+
+    function writeIntoDB(data){
+        var rows = data.split('\n');
+        var i = 0;
+        for (i; i<rows.length; i++) {
+            var row = rows[i];
+            var words = row.split(',');
+            var name = words[0];
+            var counts = words[1];
+            if(counts !== undefined && counts != ""){
+                var eventsdb=require('../eventsdb');
+                eventsdb.insertEvent(utils.genCurrDate(), "COSMOS", "LongUrl3Sec",counts, name, "", "", "");
+            }
+        }
+    }
+    writeIntoDB(data)
+}
+
+function cosmosLongUrl4SecCallBack (data) {
+
+    console.log(data);
+
+    function writeIntoDB(data){
+        var rows = data.split('\n');
+        var i = 0;
+        for (i; i<rows.length; i++) {
+            var row = rows[i];
+            var words = row.split(',');
+            var name = words[0];
+            var counts = words[1];
+            if(counts !== undefined && counts != ""){
+                var eventsdb=require('../eventsdb');
+                eventsdb.insertEvent(utils.genCurrDate(), "COSMOS", "LongUrl4Sec",counts, name, "", "", "");
+            }
+        }
+    }
+    writeIntoDB(data)
+}
+
+function writeIntoFileCallBack (data) {
     var fs = require('fs');
     var crypto = require('crypto');
     var date = new Date();
@@ -50,7 +99,10 @@ function cosmosCallBack (data) {
         } else {
             console.log("File " + filename + ".json" + " has been saved to " + "public/tmp");
         }
-    })}
+    })
+}
 
-module.exports.cosmosCallBack = cosmosCallBack;
-module.exports.apiCallBack = apiCallBack;
+module.exports.cosmosLongUrl3SecCallBack = cosmosLongUrl3SecCallBack;
+module.exports.cosmosLongUrl4SecCallBack = cosmosLongUrl4SecCallBack;
+module.exports.apiErrorCallBack = apiErrorCallBack;
+module.exports.apiTimeoutCallBack = apiTimeoutCallBack;

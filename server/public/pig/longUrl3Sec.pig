@@ -5,7 +5,8 @@ define LogView com.ebay.appmon.reports.pig.udfs.LogViewUrl();
 A = LOAD 'tmp'
     using com.ebay.appmon.reports.pig.TransactionLoader('$colo', '$env', '$pool', '$machine', '$startDate', '$endDate', '$sampling')
     as (threadId:chararray, type:chararray, time:long, name:chararray, messageClass:chararray, duration:float, status:chararray, agent:chararray, referrer:chararray, userIP:chararray,records:chararray, env:chararray, machine:chararray,pool:chararray, publisher:chararray);
-    B = FILTER A BY duration > 10000;
-C = FILTER B BY name MATCHES 'OrderManagementSvcV1';
-D = FOREACH C GENERATE duration, machine, LogView('http://appmon.vip.ebay.com/logviewui',env,pool,machine,time,threadId),REGEX_EXTRACT(records, '(orders_[^&]*|invoices_[^&]*|commitments_[^&]*)', 1);
-STORE A into '$output' using PigStorage(',');
+B = FILTER A BY duration > 3000;
+C = GROUP B BY name;
+D = FOREACH C GENERATE group, COUNT(B.name) as requestcount;
+
+STORE D into '$output' using PigStorage(',');

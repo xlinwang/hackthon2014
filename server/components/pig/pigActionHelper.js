@@ -17,9 +17,9 @@ function execute(command, callback){
  * @param callback: callback to pass the link of the script back
  */
 
-exports.register = function(filelocation, callback){
+exports.register = function(filename, filelocation, callback){
     var finalCommand = 'curl -X POST http://appmon.vip.ebay.com/pig/script/'
-        + "testPig.pig"
+        + filename+".pig"
         + ' -H "Content-Type: application/octet-stream" --data-binary '+ '@'
         + filelocation;
     logger.info(finalCommand);
@@ -32,7 +32,7 @@ exports.register = function(filelocation, callback){
 
 exports.unregister = function(fileName, callback){
     var finalCommand = 'curl -X DELETE http://appmon.vip.ebay.com/pig/script/'
-        + fileName;
+        + fileName+'.pig';
     logger.info(finalCommand);
     execute(finalCommand,
         function(res){

@@ -13,8 +13,7 @@ var mongoose = require('mongoose');
 var mysql = require('mysql');
 var config = require('./config/environment');
 var pig = require('./components/pig');
-var pigParams = require('./components/pig/pigParams');
-var cbs = require('./components/pig/processor');
+var path = require('path');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
@@ -35,17 +34,9 @@ alerts.start();
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
 
-//test apicallback
-//cbs.apiCallBack();
+// Start Pig Scheduler before server up
+pig.startAll();
 
-// Start Pig Scheduler
-pig.start("testPig", cbs.cosmosCallBack, "0 */1 * * * *", pigParams.cosmosTestPig);
-//pig.start("apiPig", cbs.apiCallBack, "0 */5 * * * *");
-
-var def=require('./components/alertdef/alertdef');
-def.getAllAlertDefinitions().then(function(alerts){
-	console.log(alerts);
-})
 // Setup server
 var app = express();
 logger.debug("Overriding 'Express' logger");
@@ -55,7 +46,7 @@ require('./config/express')(app);
 require('./routes')(app);
 
 // exports public folder
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Start server

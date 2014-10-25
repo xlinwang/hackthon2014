@@ -2,9 +2,11 @@
 var scheduler = require('./pigScheduler');
 var utils = require('./utils');
 var logger = require("../../utils/logger");
+var pigParams = require('./pigParams');
+var cbs = require('./processor');
 
 var defaultParams = {
-    period:"0 */1 * * * *",
+    period:"0 */30 * * * *",
     data:{
         "inputParameters":
         {   "startDate":utils.genStartDate(),
@@ -19,6 +21,31 @@ var defaultParams = {
     }
 }
 
+/**
+ * name: startAll
+ * start all registered scripts
+ * @param params
+ * @returns {*}
+ */
+function startAll(){
+
+    // COSMOS
+    start("longUrl3Sec", cbs.cosmosLongUrl3SecCallBack, "0 */3 * * * *", pigParams.cosmosTestPig);
+    start("longUrl4Sec", cbs.cosmosLongUrl4SecCallBack, "0 */3 * * * *", pigParams.cosmosTestPig);
+
+    // API
+    start("Errorcounts", cbs.apiErrorCallBack, "0 */30 * * * *", pigParams.apiTestPig);
+    start("Reqtimeout120", cbs.apiTimeoutCallBack, "0 */30 * * * *", pigParams.apiTestPig);
+    start("Errorcounts", cbs.apiErrorCallBack, "0 */30 * * * *", pigParams.apiIntlPig);
+    start("Reqtimeout120", cbs.apiTimeoutCallBack, "0 */30 * * * *", pigParams.apiIntlPig);
+}
+
+/**
+ * name: start
+ * start one registered scripts
+ * @param params
+ * @returns {*}
+ */
 function start(script, callback, period, params) {
 
     // TODO check all params
@@ -29,11 +56,16 @@ function start(script, callback, period, params) {
     }
     log("period: " + period);
     var finalParams = generateParams(params);    // generate new params
-    log("finalPs: " +  JSON.stringify(finalParams));
+//    log("finalPs: " +  JSON.stringify(finalParams));
     scheduler.runPeriod(script, period, finalParams, callback);
 
 }
 
+/**
+ *
+ * @param params
+ * @returns {*}
+ */
 function generateParams(params){
     var finalParams = JSON.parse(JSON.stringify(defaultParams));
     if(params === undefined){
@@ -95,4 +127,5 @@ function log(msg){
 }
 
 module.exports.start = start;
+module.exports.startAll = startAll;
 module.exports.log = log;
