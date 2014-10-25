@@ -3,6 +3,8 @@
 var eventsdb=require('../eventsdb');
 var CronJob = require('cron').CronJob;
 var mailer = require('../mailer')
+var def=require('../alertdef/alertdef');
+
 
 module.exports.start=function() {
 
@@ -19,12 +21,16 @@ module.exports.start=function() {
 };
 
 function checkDB(){
-	var sqlQuery = 'select EVENT_DATE, MODULE, DIMENSION1, DURATION, COUNT(DIMENSION1) as count from coms_monitoring.EVENTS where EVENT_DATE >= DATE_SUB(NOW(),INTERVAL 0.5 HOUR) and DURATION > 60 group by MODULE, DIMENSION1 having count>2 ;'
+def.getAllAlertDefinitions().then(function(alerts){
+                console.log(alerts);
+})
+
+	var sqlQuery = 'select EVENT_DATE, MODULE, DIMENSION1, VALUE, COUNT(DIMENSION1) as count from coms_monitoring.EVENTS where EVENT_DATE >= DATE_SUB(NOW(),INTERVAL 0.5 HOUR) and VALUE > 60 group by MODULE, DIMENSION1 having count>2 ;'
 
 	// check
 	eventsdb.getConnectionPool().query(sqlQuery, function(err, rows, fields) {
   		if (err) throw err;
-  		prepareEmailNotification(rows[0].DURATION)
+  		prepareEmailNotification(rows[0].VALUE)
   		for( var i in rows) {
   			console.log(rows[i]);	
 
@@ -35,7 +41,7 @@ function checkDB(){
 
 function prepareEmailNotification(duration){
 	var frommail="no-reply@ebay.com";
-    var toemail="thtammineni@ebay.com";
+    var toemail="avc@gmail.com"//"thtammineni@ebay.com";
       var HtmlStr="<TABLE  width='20%'>" +
                     "<TR bgcolor='#0066CC'>" +
                         "<TD><font color='#FFFFFF'>Parameter</font></TD>" +
