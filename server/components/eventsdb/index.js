@@ -56,6 +56,7 @@ exports.getDistinctDimension1=function() {
 	connectionpool.query('SELECT distinct dimension1 FROM EVENTS',function(err,result){
 		if(err) {
 			deffered.reject(err);
+
 		} else {
 			deffered.resolve(result);
 		}
@@ -91,6 +92,7 @@ exports.executeQuery=function(sql,bindparams) {
 	var defered=q.defer();
 	connectionpool.query(sql,bindparams,function(err,result){
 		if(err) {
+			console.log("ERROR"+err)
 			defered.reject(err);
 		} else {
 			defered.resolve(result);

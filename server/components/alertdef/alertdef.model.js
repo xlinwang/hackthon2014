@@ -60,24 +60,46 @@ AlertDefSchema.methods.shouldAlert=function() {
 				alert=true;
 			}
 		}
-		return alert;
+		return [alert, result[0]];
 	});
 
 };
-AlertDefSchema.methods.sendEmail=function() {
+AlertDefSchema.methods.sendEmail=function(result) {
+	 
 	var mailoptions= {
 		from:"no-reply@ebay.com",
 		to:this.email,
-		subject:this.getShortDescription()+" has exeeded treshold",
-		html:this.getShortDescription()+" has exeeded treshold "+this.treshold
+		subject:this.getShortDescription()+" has  exceeded threshold",
+		html: "<h1 style=\"color:#003366;font-family:\"Times New Roman\", Georgia, Serif;font-size:200%;\">Monitoring Service Report</h1>" +
+			  "<TABLE  width='100%'> " + 
+	                     "<TR bgcolor='#5C8AE6'> " +
+	                         "<TD><font color='#FFFFFF'>Module</font></TD> " +
+	                         "<TD><font color='#FFFFFF'>Usecase</font></TD> " +
+	  					     "<TD><font color='#FFFFFF'>VALUE</font></TD> " +
+	 						 "<TD width=\"50%\"><font color='#FFFFFF'>Description</font></TD>" +
+	 
+	                     "</TR> " +
+	                     "<TR> " +
+	                         "<TD>"+this.module+"</TD> " +
+	                         "<TD>"+this.usecase+"</TD>  " +
+	                         "<TD>"+result[1].result+"</TD>" +
+							 "<TD>"+this.getShortDescription()+" has exeeded defined treshold "+this.treshold+" when perfromed "+this.aggregateType+" of values</TD>" +
+	                      "</TR>" +
+	                    "</TABLE>" +
+
+	"<p> This is queried against database at "+ new Date()+" </p> " 
+
+		//this.getShortDescription()+" has exeeded treshold "+this.treshold
 	};
 	console.log(mailoptions);
 	var defer=q.defer();
 	mailer.smtpTransport.sendMail(mailoptions, function(error, response){
         if(error){
     		defer.reject(error);
+    		console.log("HTML ERROR"+ error)
         }else{
            defer.resolve(response);
+           console.log("SUCESS")
         }
     });
     return defer.promise;
