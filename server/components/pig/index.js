@@ -1,5 +1,5 @@
 'use strict';
-var scheduler = require('./pigScheduler');
+var Scheduler = require('./pigScheduler');
 var utils = require('./utils');
 var logger = require("../../utils/logger");
 var pigParams = require('./pigParams');
@@ -30,8 +30,8 @@ var defaultParams = {
 function startAll(){
 
     // COSMOS
-    start("longUrl3Sec", cbs.cosmosLongUrl3SecCallBack, "0 */3 * * * *", pigParams.cosmosTestPig);
-    start("longUrl4Sec", cbs.cosmosLongUrl4SecCallBack, "0 */3 * * * *", pigParams.cosmosTestPig);
+    start("longUrl3Sec", cbs.cosmosLongUrl3SecCallBack, "0 */30 * * * *", pigParams.cosmosTestPig);
+    start("longUrl4Sec", cbs.cosmosLongUrl4SecCallBack, "0 */30 * * * *", pigParams.cosmosTestPig);
 
     // API
     start("Errorcounts", cbs.apiErrorCallBack, "0 */30 * * * *", pigParams.apiTestPig);
@@ -57,8 +57,8 @@ function start(script, callback, period, params) {
     log("period: " + period);
     var finalParams = generateParams(params);    // generate new params
 //    log("finalPs: " +  JSON.stringify(finalParams));
-    scheduler.runPeriod(script, period, finalParams, callback);
-
+    var scheduler = Scheduler.getScheduler(script, period, finalParams, callback);
+    scheduler.runPeriod();
 }
 
 /**

@@ -13,7 +13,7 @@ var pigParams = {
                 "pool":"r1ordersvc",
                 "machine":"null",
                 "colo":"null",
-                "sampling":"1"
+                "sampling":"100"
             }
 
         }
@@ -28,7 +28,7 @@ var pigParams = {
                 "pool":"v3apixocore",
                 "machine":"null",
                 "colo":"null",
-                "sampling":"10"
+                "sampling":"100"
             }
 
         }
@@ -43,7 +43,7 @@ var pigParams = {
                 "pool":"v3apixointl",
                 "machine":"null",
                 "colo":"null",
-                "sampling":"10"
+                "sampling":"100"
             }
 
         }

@@ -12,7 +12,7 @@ module.exports.start=function() {
 
 	var job = new CronJob('* */5 * * * *',
 		function(){
-            console.log("hello");
+//            console.log("hello");
             alertdef.getAllAlertDefinitions().then(function(result){
                 for(var i=0;i<result.length;i++) {
                     var alert=result[i];
