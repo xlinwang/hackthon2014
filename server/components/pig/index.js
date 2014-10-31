@@ -47,7 +47,7 @@ function startAll(){
  * @returns {*}
  */
 function start(script, callback, period, params) {
-
+    http://appmon.vip.ebay.com/pig/request/ce72f586-b187-4d89-9fb2-d6c0d6a21ade/status
     // TODO check all params
 //    log(JSON.stringify(defaultParams));
 

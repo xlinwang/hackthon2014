@@ -63,7 +63,20 @@ function genStartDate(){
     return datetime;
 };
 
+function convertCalDateToDbDate(date){
+    // input format: 2014/10/30-13:00
+    // output format: 2014-10-31 09:39:21
+
+    var dateAndTime = date.split('-');
+    var date = dateAndTime[0].split('/');
+    var time = dateAndTime[1].split(':');
+
+    var outputDate = date.join('-') + " " + time.join(':') + ":00";
+    return outputDate;
+}
+
 
 module.exports.genStartDate = genStartDate;
 module.exports.genEndDate = genEndDate;
 module.exports.genCurrDate = genCurrDate;
+module.exports.convertCalDateToDbDate = convertCalDateToDbDate;

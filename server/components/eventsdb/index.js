@@ -10,9 +10,18 @@ exports.getConnectionPool=function() {
 	return connectionpool;
 }
 
-exports.insertEvent=function(date,module,usecase,value,dimension1,dimension2,dimension3,details) {
+exports.insertEvent=function(date,module,usecase,value,dimension1,dimension2,dimension3,details,startDate, endDate) {
 	var deffered=q.defer();
-	var params={EVENT_DATE:date,MODULE:module,USECASE:usecase,VALUE:value,DIMENSION1:dimension1,DIMENSION2:dimension2,DIMENSION3:dimension3,DETAILS:details};
+	var params={EVENT_DATE:date,
+        MODULE:module,
+        USECASE:usecase,
+        VALUE:value,
+        DIMENSION1:dimension1,
+        DIMENSION2:dimension2,
+        DIMENSION3:dimension3,
+        DETAILS:details,
+        START_DATE:startDate,
+        END_DATE:endDate};
 
 	connectionpool.query('INSERT INTO EVENTS SET ?',params,function(err,result){
 		if(err) {
