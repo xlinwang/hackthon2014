@@ -1,7 +1,6 @@
 /**
  * Created by xwang17 on 10/16/14.
  */
-
 var logger = require("../../utils/logger");
 var CronJob = require('cron').CronJob;
 var events = require('events');
@@ -32,7 +31,10 @@ function Scheduler(fileName, period, params, callback){
     }
 
     function isSubmitSucceed(res){
-        return true;
+        if(res !== "Script does not exist")
+            return true;
+        else
+            return false;
     }
 
     function validFile(fileName){
@@ -40,7 +42,6 @@ function Scheduler(fileName, period, params, callback){
     };
 
     function generateLocation(fileName){
-
         var fileLocation = './server/public/pig/'+fileName+'.pig';
         return fileLocation;
     }
@@ -58,11 +59,12 @@ function Scheduler(fileName, period, params, callback){
     function registerFile(res, fileName, params, callback){
         log("PIG -- "+ fileName +" Registered file: " +res);
         if(isRegisterSucceed(res)){
-            params.data.inputParameters.startDate = utils.genStartDate();
-            params.data.inputParameters.endDate = utils.genEndDate();
+            params.data.inputParameters.startDate = utils.getMinutesBeforeNow(60 + params.range);
+            params.data.inputParameters.endDate = utils.getMinutesBeforeNow(60);
             log("PIG -- "+"Job submitting: " + JSON.stringify(params));
             submitJob(fileName+'.pig', params.data, callback);
         }else{
+//            log.error("PIG -- job register failed");
         }
     }
 
@@ -77,6 +79,7 @@ function Scheduler(fileName, period, params, callback){
                 pig.status(jobIdRes, fileName, timerId, data, callback, checkStatus);
             }, 10000);
         }else{
+//            log.error("PIG -- job submit failed");
         }
     };
 
@@ -87,14 +90,16 @@ function Scheduler(fileName, period, params, callback){
             // continue
         }else if(status === "SUCCEEDED"){
             // clear and callback
+            log("timerId:" + timerId.toString());
             clearInterval(timerId);
             pig.retrieveOutput(jobIdRes, callback, data, afterSucceeded);
         }else{
+            log("timerId:" + timerId.toString());
             clearInterval(timerId);
             log("PIG -- Job "+jobIdRes+" failed!");
 
             //retry
-            setTimeout(submitJob, 6000, fileName, data);
+            setTimeout(submitJob, 6000, fileName, data, callback);
         }
     }
 
@@ -108,7 +113,6 @@ function Scheduler(fileName, period, params, callback){
 
 
     this.runPeriod = function (){
-        log(JSON.stringify(params));
 
         var runScript = this.runScript;
         var fileName = this.fileName;

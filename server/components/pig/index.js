@@ -7,6 +7,7 @@ var cbs = require('./processor');
 
 var defaultParams = {
     period:"0 */30 * * * *",
+    range:60,
     data:{
         "inputParameters":
         {   "startDate":utils.genStartDate(),
@@ -30,14 +31,14 @@ var defaultParams = {
 function startAll(){
 
     // COSMOS
-    start("longUrl3Sec", cbs.cosmosLongUrl3SecCallBack, "0 */30 * * * *", pigParams.cosmosTestPig);
-    start("longUrl4Sec", cbs.cosmosLongUrl4SecCallBack, "0 */30 * * * *", pigParams.cosmosTestPig);
+    start("longUrl3Sec", cbs.cosmosLongUrl3SecCallBack, "0 */7 * * * *", pigParams.cosmosTestPig);
+    start("longUrl4Sec", cbs.cosmosLongUrl4SecCallBack, "0 */7 * * * *", pigParams.cosmosTestPig);
 
     // API
-    start("Errorcounts", cbs.apiErrorCallBack, "0 */30 * * * *", pigParams.apiTestPig);
-    start("Reqtimeout120", cbs.apiTimeoutCallBack, "0 */30 * * * *", pigParams.apiTestPig);
-    start("Errorcounts", cbs.apiErrorCallBack, "0 */30 * * * *", pigParams.apiIntlPig);
-    start("Reqtimeout120", cbs.apiTimeoutCallBack, "0 */30 * * * *", pigParams.apiIntlPig);
+    start("Errorcounts", cbs.apiErrorCallBack, "0 */10 * * * *", pigParams.apiTestPig);
+    start("Reqtimeout120", cbs.apiTimeoutCallBack, "0 */10 * * * *", pigParams.apiTestPig);
+    start("Errorcounts", cbs.apiErrorCallBack, "0 */10 * * * *", pigParams.apiIntlPig);
+    start("Reqtimeout120", cbs.apiTimeoutCallBack, "0 */10 * * * *", pigParams.apiIntlPig);
 }
 
 /**
@@ -75,6 +76,10 @@ function generateParams(params){
         params.data = defaultParams.data;
     }else{
         log("params data override");
+
+        if(params.range !== undefined){
+            finalParams.range = params.range;
+        }
 
         if(params.data.inputParameters !== undefined){
             // override existing params in default

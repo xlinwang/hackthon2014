@@ -5,6 +5,7 @@
 var pigParams = {
 
     cosmosTestPig:{
+        range: 60, // mins
         data:{
             "inputParameters":
             {   "startDate":'2014/10/20-12:00',
@@ -20,6 +21,7 @@ var pigParams = {
     },
 
     apiTestPig:{
+        range: 60,
         data:{
             "inputParameters":
             {   "startDate":'2014/10/20-11:06',
@@ -35,6 +37,7 @@ var pigParams = {
     },
 
     apiIntlPig:{
+        range: 60,
         data:{
             "inputParameters":
             {   "startDate":'2014/10/20-11:06',
