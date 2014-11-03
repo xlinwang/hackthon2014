@@ -66,3 +66,4 @@ module.exports.genStartDate = genStartDate;
 module.exports.genEndDate = genEndDate;
 module.exports.genCurrDate = genCurrDate;
 module.exports.getMinutesBeforeNow = getMinutesBeforeNow;
+module.exports.convertCalDateToDbDate = convertCalDateToDbDate;
