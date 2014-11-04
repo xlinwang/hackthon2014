@@ -1,5 +1,5 @@
 'use strict';
-var scheduler = require('./pigScheduler');
+var Scheduler = require('./pigScheduler');
 var utils = require('./utils');
 var logger = require("../../utils/logger");
 var pigParams = require('./pigParams');
@@ -7,6 +7,7 @@ var cbs = require('./processor');
 
 var defaultParams = {
     period:"0 */30 * * * *",
+    range:60,
     data:{
         "inputParameters":
         {   "startDate":utils.genStartDate(),
@@ -34,10 +35,10 @@ function startAll(){
     start("longUrl4Sec", cbs.cosmosLongUrl4SecCallBack, "0 */30 * * * *", pigParams.cosmosTestPig);
 
     // API
-    start("Errorcounts", cbs.apiErrorCallBack, "0 */55 * * * *", pigParams.apiTestPig);
-    start("Reqtimeout120", cbs.apiTimeoutCallBack, "0 */55 * * * *", pigParams.apiTestPig);
-    start("Errorcounts", cbs.apiErrorCallBack, "0 */58 * * * *", pigParams.apiIntlPig);
-    start("Reqtimeout120", cbs.apiTimeoutCallBack, "0 */58 * * * *", pigParams.apiIntlPig);
+    start("Errorcounts", cbs.apiErrorCallBack, "0 */30 * * * *", pigParams.apiTestPig);
+    start("Reqtimeout120", cbs.apiTimeoutCallBack, "0 */30 * * * *", pigParams.apiTestPig);
+    start("Errorcounts", cbs.apiErrorCallBack, "0 */30 * * * *", pigParams.apiIntlPig);
+    start("Reqtimeout120", cbs.apiTimeoutCallBack, "0 */30 * * * *", pigParams.apiIntlPig);
 }
 
 /**
@@ -47,7 +48,7 @@ function startAll(){
  * @returns {*}
  */
 function start(script, callback, period, params) {
-
+    http://appmon.vip.ebay.com/pig/request/ce72f586-b187-4d89-9fb2-d6c0d6a21ade/status
     // TODO check all params
 //    log(JSON.stringify(defaultParams));
 
@@ -57,8 +58,8 @@ function start(script, callback, period, params) {
     log("period: " + period);
     var finalParams = generateParams(params);    // generate new params
 //    log("finalPs: " +  JSON.stringify(finalParams));
-    scheduler.runPeriod(script, period, finalParams, callback);
-
+    var scheduler = Scheduler.getScheduler(script, period, finalParams, callback);
+    scheduler.runPeriod();
 }
 
 /**
@@ -75,6 +76,10 @@ function generateParams(params){
         params.data = defaultParams.data;
     }else{
         log("params data override");
+
+        if(params.range !== undefined){
+            finalParams.range = params.range;
+        }
 
         if(params.data.inputParameters !== undefined){
             // override existing params in default

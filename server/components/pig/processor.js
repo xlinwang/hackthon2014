@@ -4,8 +4,8 @@
 
 var utils = require('./utils');
 
-function apiErrorCallBack (data) {
-    function cb(data){
+function apiErrorCallBack (data, params) {
+    function cb(data, params){
         var rows = data.split('\n');
         var i = 0;
         for(i; i<rows.length; i++){
@@ -16,14 +16,18 @@ function apiErrorCallBack (data) {
             var version = words[2];
             var counts = words[3];
 
-            var eventsdb=require('../eventsdb');
-            eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "CriticalError",counts, name, siteId, version, "");
+            if(counts !== undefined && counts != "") {
+                var eventsdb = require('../eventsdb');
+                eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "CriticalError", counts, name, siteId, version, "",
+                    utils.convertCalDateToDbDate(params.inputParameters.startDate),
+                    utils.convertCalDateToDbDate(params.inputParameters.endDate));
+            }
         }
     }
-    cb(data);
+    cb(data, params);
 }
-function apiTimeoutCallBack (data) {
-    function cb(data){
+function apiTimeoutCallBack (data, params) {
+    function cb(data, params){
         var rows = data.split('\n');
         var i = 0;
         for(i; i<rows.length; i++){
@@ -33,21 +37,24 @@ function apiTimeoutCallBack (data) {
             var siteId = words[1];
             var version = words[2];
             var counts = words[3];
-
-            var eventsdb=require('../eventsdb');
-            eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "Timeout",counts, name, siteId, version, "");
+            if(counts !== undefined && counts != "") {
+                var eventsdb = require('../eventsdb');
+                eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "Timeout", counts, name, siteId, version, "",
+                    utils.convertCalDateToDbDate(params.inputParameters.startDate),
+                    utils.convertCalDateToDbDate(params.inputParameters.endDate));
+            }
         }
     }
-    cb(data);
+    cb(data, params);
 }
 
 
 
-function cosmosLongUrl3SecCallBack (data) {
+function cosmosLongUrl3SecCallBack (data, params) {
 
     console.log(data);
 
-    function writeIntoDB(data){
+    function writeIntoDB(data, params){
         var rows = data.split('\n');
         var i = 0;
         for (i; i<rows.length; i++) {
@@ -57,18 +64,20 @@ function cosmosLongUrl3SecCallBack (data) {
             var counts = words[1];
             if(counts !== undefined && counts != ""){
                 var eventsdb=require('../eventsdb');
-                eventsdb.insertEvent(utils.genCurrDate(), "COSMOS", "LongUrl3Sec",counts, name, "", "", "");
+                eventsdb.insertEvent(utils.genCurrDate(), "COSMOS", "LongUrl3Sec",counts, name, "", "", "",
+                    utils.convertCalDateToDbDate(params.inputParameters.startDate),
+                    utils.convertCalDateToDbDate(params.inputParameters.endDate));
             }
         }
     }
-    writeIntoDB(data)
+    writeIntoDB(data, params)
 }
 
-function cosmosLongUrl4SecCallBack (data) {
+function cosmosLongUrl4SecCallBack (data, params) {
 
     console.log(data);
 
-    function writeIntoDB(data){
+    function writeIntoDB(data, params){
         var rows = data.split('\n');
         var i = 0;
         for (i; i<rows.length; i++) {
@@ -78,14 +87,16 @@ function cosmosLongUrl4SecCallBack (data) {
             var counts = words[1];
             if(counts !== undefined && counts != ""){
                 var eventsdb=require('../eventsdb');
-                eventsdb.insertEvent(utils.genCurrDate(), "COSMOS", "LongUrl4Sec",counts, name, "", "", "");
+                eventsdb.insertEvent(utils.genCurrDate(), "COSMOS", "LongUrl4Sec",counts, name, "", "", "",
+                    utils.convertCalDateToDbDate(params.inputParameters.startDate),
+                    utils.convertCalDateToDbDate(params.inputParameters.endDate));
             }
         }
     }
-    writeIntoDB(data)
+    writeIntoDB(data, params)
 }
 
-function writeIntoFileCallBack (data) {
+function writeIntoFileCallBack (data, params) {
     var fs = require('fs');
     var crypto = require('crypto');
     var date = new Date();

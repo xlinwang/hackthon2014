@@ -5,6 +5,7 @@
 var pigParams = {
 
     cosmosTestPig:{
+        range: 60, // mins
         data:{
             "inputParameters":
             {   "startDate":'2014/10/20-12:00',
@@ -13,13 +14,14 @@ var pigParams = {
                 "pool":"r1ordersvc",
                 "machine":"null",
                 "colo":"null",
-                "sampling":"1"
+                "sampling":"100"
             }
 
         }
     },
 
     apiTestPig:{
+        range: 60,
         data:{
             "inputParameters":
             {   "startDate":'2014/10/20-11:06',
@@ -28,13 +30,14 @@ var pigParams = {
                 "pool":"v3apixocore",
                 "machine":"null",
                 "colo":"null",
-                "sampling":"10"
+                "sampling":"100"
             }
 
         }
     },
 
     apiIntlPig:{
+        range: 60,
         data:{
             "inputParameters":
             {   "startDate":'2014/10/20-11:06',
@@ -43,7 +46,7 @@ var pigParams = {
                 "pool":"v3apixointl",
                 "machine":"null",
                 "colo":"null",
-                "sampling":"10"
+                "sampling":"100"
             }
 
         }
