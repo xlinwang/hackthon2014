@@ -3,6 +3,53 @@
  */
 
 var utils = require('./utils');
+function comsDataCallBack (data, params) { // 10 percent, most scripts except one(UnexpectedError)
+    function cb(data, params){
+        var rows = data.split('\n');
+        var i = 0;
+        for(i; i<rows.length; i++){
+            var row = rows[i];
+            var words = row.split(',');
+            var name = words[0];
+            var value = words[1];
+            var errorclass = words[2];
+            var errordetails= words[3];
+            if(value !== undefined && value != "") {
+                var eventsdb = require('../eventsdb');
+                eventsdb.insertEvent(utils.genCurrDate(), "COMSDATA", "Error", value, name, errorclass, errordetails, "",
+                    utils.convertCalDateToDbDate(params.inputParameters.startDate),
+                    utils.convertCalDateToDbDate(params.inputParameters.endDate),
+                    "");
+                // date,module,usecase,value,dimension1,dimension2,dimension3,details,startDate,endDate,dimension4
+            }
+        }
+    }
+    cb(data, params);
+}
+
+function comsData2CallBack (data, params) {// 100 percent, UnexpectedError
+    function cb(data, params){
+        var rows = data.split('\n');
+        var i = 0;
+        for(i; i<rows.length; i++){
+            var row = rows[i];
+            var words = row.split(',');
+            var errorclass = words[0];
+            var value = words[1];
+            var name = words[2];
+
+            if(counts !== undefined && counts != "") {
+                var eventsdb = require('../eventsdb');
+                eventsdb.insertEvent(utils.genCurrDate(), "COMSDATA", "Error", value, name, errorclass, "", "",
+                    utils.convertCalDateToDbDate(params.inputParameters.startDate),
+                    utils.convertCalDateToDbDate(params.inputParameters.endDate),
+                    "");
+                // date,module,usecase,value,dimension1,dimension2,dimension3,details,startDate,endDate,dimension4
+            }
+        }
+    }
+    cb(data, params);
+}
 
 function apiErrorCallBack (data, params) {
     function cb(data, params){
@@ -14,13 +61,15 @@ function apiErrorCallBack (data, params) {
             var name = words[0];
             var siteId = words[1];
             var version = words[2];
-            var counts = words[3];
+            var appname = words[3];
+            var counts = words[4];
 
             if(counts !== undefined && counts != "") {
                 var eventsdb = require('../eventsdb');
                 eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "CriticalError", counts, name, siteId, version, "",
                     utils.convertCalDateToDbDate(params.inputParameters.startDate),
-                    utils.convertCalDateToDbDate(params.inputParameters.endDate));
+                    utils.convertCalDateToDbDate(params.inputParameters.endDate),
+                    appname);
             }
         }
     }
@@ -36,19 +85,44 @@ function apiTimeoutCallBack (data, params) {
             var name = words[0];
             var siteId = words[1];
             var version = words[2];
-            var counts = words[3];
+            var appname = words[3];
+            var counts = words[4];
             if(counts !== undefined && counts != "") {
                 var eventsdb = require('../eventsdb');
                 eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "Timeout", counts, name, siteId, version, "",
                     utils.convertCalDateToDbDate(params.inputParameters.startDate),
-                    utils.convertCalDateToDbDate(params.inputParameters.endDate));
+                    utils.convertCalDateToDbDate(params.inputParameters.endDate),
+                    appname);
             }
         }
     }
     cb(data, params);
 }
 
-
+function apiRCSErrorCountCallBack (data, params) {
+    function cb(data, params){
+        var rows = data.split('\n');
+        var i = 0;
+        for(i; i<rows.length; i++){
+            var row = rows[i];
+            var words = row.split(',');
+            var name = words[0];
+            var siteId = words[1];
+            var errorcode = words[2];
+            var updateType= words[3];
+            var counts = words[4];
+            if(counts !== undefined && counts != "") {
+                var eventsdb = require('../eventsdb');
+                eventsdb.insertEvent(utils.genCurrDate(), "TAPI", "RCSError", counts, name, siteId, errorcode, "",
+                    utils.convertCalDateToDbDate(params.inputParameters.startDate),
+                    utils.convertCalDateToDbDate(params.inputParameters.endDate),
+                    updateType);
+                // date,module,usecase,value,dimension1,dimension2,dimension3,details,startDate,endDate,dimension4
+            }
+        }
+    }
+    cb(data, params);
+}
 
 function cosmosLongUrl3SecCallBack (data, params) {
 
@@ -117,3 +191,6 @@ module.exports.cosmosLongUrl3SecCallBack = cosmosLongUrl3SecCallBack;
 module.exports.cosmosLongUrl4SecCallBack = cosmosLongUrl4SecCallBack;
 module.exports.apiErrorCallBack = apiErrorCallBack;
 module.exports.apiTimeoutCallBack = apiTimeoutCallBack;
+module.exports.apiRCSErrorCountCallBack = apiRCSErrorCountCallBack;
+module.exports.comsDataCallBack = comsDataCallBack;
+module.exports.comsData2CallBack = comsData2CallBack;

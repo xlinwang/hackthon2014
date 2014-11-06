@@ -99,7 +99,7 @@ function Scheduler(fileName, period, params, callback){
             log("PIG -- Job "+jobIdRes+" failed!");
 
             //retry
-            setTimeout(submitJob, 6000, fileName, data, callback);
+//            setTimeout(submitJob, 6000, fileName, data, callback);
         }
     }
 
