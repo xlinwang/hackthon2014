@@ -30,12 +30,12 @@ var eventsdb=require('./components/eventsdb');
 eventsdb.setConnectionPool(mysqlconnectionpool);
 
 var alerts=require('./components/alerts');
-alerts.start();
+//alerts.start();
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
 
 // Start Pig Scheduler before server up
-pig.startAll();
+//pig.startAll();
 
 // Setup server
 var app = express();
