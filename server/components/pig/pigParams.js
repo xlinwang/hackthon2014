@@ -6,6 +6,7 @@ var pigParams = {
 
     cosmosTestPig:{
         range: 60, // mins
+        retry: 3,
         data:{
             "inputParameters":
             {   "startDate":'2014/10/20-12:00',
@@ -22,6 +23,7 @@ var pigParams = {
 
     apiTestPig:{
         range: 60,
+        retry: 3,
         data:{
             "inputParameters":
             {   "startDate":'2014/10/20-11:06',
@@ -38,6 +40,7 @@ var pigParams = {
 
     apiIntlPig:{
         range: 60,
+        retry: 3,
         data:{
             "inputParameters":
             {   "startDate":'2014/10/20-11:06',
@@ -50,9 +53,46 @@ var pigParams = {
             }
 
         }
+    },
+
+    comsDataPig:{
+        range: 120,
+        retry: 3,
+        data:{
+            "inputParameters":
+            {   "startDate":'2014/10/20-11:06',
+                "endDate":'2014/10/20-12:06',
+                "env":"prod",
+                "pool":"v3besxosvcscore",
+                "machine":"null",
+                "colo":"null",
+                "sampling":"10"
+            }
+
+        }
+    },
+
+    comsDataAllPig:{
+        range: 120,
+        retry: 3,
+        data:{
+            "inputParameters":
+            {   "startDate":'2014/10/20-11:06',
+                "endDate":'2014/10/20-12:06',
+                "env":"prod",
+                "pool":"v3besxosvcscore",
+                "machine":"null",
+                "colo":"null",
+                "sampling":"100"
+            }
+
+        }
     }
 }
 
 module.exports.cosmosTestPig = pigParams.cosmosTestPig;
 module.exports.apiTestPig = pigParams.apiTestPig;
 module.exports.apiIntlPig = pigParams.apiIntlPig;
+module.exports.comsDataPig = pigParams.comsDataPig;
+module.exports.comsDataAllPig = pigParams.comsDataAllPig;
+

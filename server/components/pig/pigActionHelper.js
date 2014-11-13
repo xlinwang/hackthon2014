@@ -17,27 +17,27 @@ function execute(command, callback){
  * @param callback: callback to pass the link of the script back
  */
 
-exports.register = function(filename, params, filelocation, cb, callback){
+exports.register = function(filename, filelocation, callback){
     var finalCommand = 'curl -X POST http://appmon.vip.ebay.com/pig/script/'
-        + filename+".pig"
+        + filename
         + ' -H "Content-Type: application/octet-stream" --data-binary '+ '@'
         + filelocation;
     logger.info(finalCommand);
     execute(finalCommand,
         function(res){
             console.log(res);
-            callback(res, filename, params, cb);
+            callback(res);
         }
     );
 };
 
-exports.unregister = function(fileName, params, cb, callback){
+exports.unregister = function(fileName, callback){
     var finalCommand = 'curl -X DELETE http://appmon.vip.ebay.com/pig/script/'
-        + fileName+'.pig';
+        + fileName;
     logger.info(finalCommand);
     execute(finalCommand,
         function(res){
-            callback(res, fileName, params, cb);
+            callback(res);
         }
     );
 };
@@ -53,15 +53,15 @@ exports.retrieve = function(fileName, callback){
     );
 };
 
-exports.submit = function(fileName, data, cb, callback){
+exports.submit = function(fileName, params, callback){
     var finalCommand = 'curl -X POST http://appmon.vip.ebay.com/pig/request/'
         + fileName
         + ' -H "Content-Type: application/json" '
-        + '-d ' + "'"+ JSON.stringify(data) + "'";
+        + '-d ' + "'"+ JSON.stringify(params.data) + "'";
     logger.info(finalCommand);
     execute(finalCommand,
         function(res){
-            callback(res, fileName, data, cb);
+            callback(res);
         }
     );
 };
@@ -77,26 +77,26 @@ exports.retrieveInput = function(uuid, callback){
     );
 };
 
-exports.status = function(uuid, fileName, timerId, data, cb, callback){
+exports.status = function(uuid, callback){
     var finalCommand = 'curl -X GET http://appmon.vip.ebay.com/pig/request/'
         + uuid
         + '/status';
     logger.info(finalCommand);
     execute(finalCommand,
         function(res){
-            callback(res, uuid, timerId, fileName, data, cb);
+            callback(res, uuid);
         }
     );
 };
 
-exports.retrieveOutput = function(uuid, cb, data, callback){
+exports.retrieveOutput = function(uuid,callback){
     var finalCommand = 'curl -X GET http://appmon.vip.ebay.com/pig/request/'
         + uuid
         + '/output';
     logger.info(finalCommand);
     execute(finalCommand,
         function(res){
-            callback(res, data, cb);
+            callback(res);
         }
     );
 };

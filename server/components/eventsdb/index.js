@@ -10,7 +10,7 @@ exports.getConnectionPool=function() {
 	return connectionpool;
 }
 
-exports.insertEvent=function(date,module,usecase,value,dimension1,dimension2,dimension3,details,startDate, endDate) {
+exports.insertEvent=function(date,module,usecase,value,dimension1,dimension2,dimension3,details,startDate,endDate,dimension4) {
 	var deffered=q.defer();
 	var params={EVENT_DATE:date,
         MODULE:module,
@@ -21,7 +21,9 @@ exports.insertEvent=function(date,module,usecase,value,dimension1,dimension2,dim
         DIMENSION3:dimension3,
         DETAILS:details,
         START_DATE:startDate,
-        END_DATE:endDate};
+        END_DATE:endDate,
+        DIMENSION4:dimension4
+    };
 
 	connectionpool.query('INSERT INTO EVENTS SET ?',params,function(err,result){
 		if(err) {
@@ -29,7 +31,7 @@ exports.insertEvent=function(date,module,usecase,value,dimension1,dimension2,dim
             console.log(err);
 		} else {
 			deffered.resolve(result);
-            console.log(result);
+//            console.log(result);
 
         }
 	});

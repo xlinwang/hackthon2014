@@ -6,131 +6,121 @@ var CronJob = require('cron').CronJob;
 var events = require('events');
 var pig = require('./pigActionHelper');
 var exec = require('child_process').exec;
+var utils = require('./utils')
 
 function Scheduler(fileName, period, params, callback){
-
-    this.fileName = fileName;
-    this.period = period;
-    this.params = params;
-    this.callback = callback;
-
-    function execute(command, callback){
-        exec(command, function(error, stdout, stderr){ callback(stdout); });
-    };
-
-
-    var utils = require('./utils')
-    var eventEmitter = new events.EventEmitter();
+//
+//    this.fileName = fileName;
+//    this.period = period;
+//    this.params = params;
+//    this.callback = callback;
+    var retryCount = params.retry;
+    var retryRegisterCount = 3;
+    var timerId;
 
     function log(msg){
         logger.info(msg)
     }
 
-    function isRegisterSucceed(res){
-        return true;
-    }
-
-    function isSubmitSucceed(res){
-        if(res !== "Script does not exist")
-            return true;
-        else
-            return false;
-    }
-
-    function validFile(fileName){
-        return true;
-    };
-
     function generateLocation(fileName){
-        var fileLocation = './server/public/pig/'+fileName+'.pig';
+        var fileLocation = './server/public/pig/'+fileName;
         return fileLocation;
     }
 
-
-    this.runScript = function(fileName, params, callback){
-        pig.unregister(fileName, params, callback, afterUnregister)
+    // private
+    var runScript = function(){
+        retryRegisterCount = 3;
+        retryCount = params.retry; // reset retryCount
+        pig.unregister(fileName, register);
     }
 
-    function afterUnregister(res, fileName, params, callback){
-        log(res + " : " + fileName+".pig");
-        pig.register(fileName, params, generateLocation(fileName), callback, registerFile);
-    }
-
-    function registerFile(res, fileName, params, callback){
-        log("PIG -- "+ fileName +" Registered file: " +res);
-        if(isRegisterSucceed(res)){
-            params.data.inputParameters.startDate = utils.getMinutesBeforeNow(60 + params.range);
-            params.data.inputParameters.endDate = utils.getMinutesBeforeNow(60);
-            log("PIG -- "+"Job submitting: " + JSON.stringify(params));
-            submitJob(fileName+'.pig', params.data, callback);
-        }else{
-//            log.error("PIG -- job register failed");
+    function register(res){
+        log(res + " : " + fileName);
+        if(retryRegisterCount > 0){
+            retryRegisterCount--;
+            log("retryRegisterCount: " + retryRegisterCount);
+            pig.register(fileName, generateLocation(fileName), submitJob);
         }
     }
 
-    function submitJob(fileName, data, callback){
-        pig.submit(fileName, data, callback, afterSubmit);
+    function submitJob(res){
+        log("PIG -- "+ fileName +" Registered file: " +res);
+        log('retryCount = ' + retryCount);
+        if(retryCount > 0){
+            retryCount = retryCount - 1;
+            log('retryCount = ' + retryCount);
+            params.data.inputParameters.startDate = utils.getMinutesBeforeNow(60 + params.range);
+            params.data.inputParameters.endDate = utils.getMinutesBeforeNow(60);
+            log("PIG -- "+"Job submitting: " + JSON.stringify(params));
+            pig.submit(fileName, params, afterSubmit);
+        }else{
+            log("Stop retry");
+
+        }
     }
 
-    function afterSubmit(jobIdRes, fileName, data, callback){
+    function afterSubmit(jobIdRes){
         log("PIG -- "+fileName +" job " + jobIdRes + " has been submitted");
-        if(isSubmitSucceed(jobIdRes)){
-            var timerId = setInterval(function () {
-                pig.status(jobIdRes, fileName, timerId, data, callback, checkStatus);
+        if(jobIdRes !== "Script does not exist"){
+            timerId = setInterval(function () {
+                pig.status(jobIdRes, checkStatus);
             }, 10000);
         }else{
-//            log.error("PIG -- job submit failed");
+            log("Script does not exist: " + fileName);
+
+            // if submit failed by "Script does not exist",
+            // will not retry, just wait for next period
+            runScript();
         }
     };
 
 
-    function checkStatus(status, jobIdRes, timerId, fileName, data, callback){
+    function checkStatus(status, jobIdRes){
         log("PIG -- "+fileName+" job "+jobIdRes + " status: " + status);
         if(status === "SUBMITTED"){
-            // continue
+            // continue, do nothing
         }else if(status === "SUCCEEDED"){
             // clear and callback
             log("timerId:" + timerId.toString());
             clearInterval(timerId);
-            pig.retrieveOutput(jobIdRes, callback, data, afterSucceeded);
+            pig.retrieveOutput(jobIdRes, afterSucceeded);
         }else{
             log("timerId:" + timerId.toString());
             clearInterval(timerId);
             log("PIG -- Job "+jobIdRes+" failed!");
 
-            //retry
-            setTimeout(submitJob, 6000, fileName, data, callback);
+            //retry with 6 sec delay
+            setTimeout(submitJob, 6000, "Retry");
         }
     }
 
-    function afterSucceeded(res, data, callback){
+    function afterSucceeded(res){
         if (callback && typeof(callback) === "function") {
-            callback(res, data);
+            callback(res, params);
         } else {
             log(callback)
         }
     }
 
 
-    this.runPeriod = function (){
-
-        var runScript = this.runScript;
-        var fileName = this.fileName;
-        var params = this.params;
-        var callback = this.callback;
-
+    var runPeriod = function (){
         var job = new CronJob({cronTime : period,
                 onTick : function(){
-                    runScript(fileName, params, callback);
+                    runScript();
                 },
                 start:true,
                 timeZone: "America/Los_Angeles"}
         );
+        job.start();
     }
+
+    // public
+    this.runScript = runScript;
+    this.runPeriod = runPeriod;
 }
 
 function getScheduler(fileName, period, params, callback){
-    return new Scheduler(fileName, period, params, callback);
+    return new Scheduler(fileName+'.pig', period, params, callback);
 }
 
 
