@@ -10,6 +10,10 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/handbag', controller.handbag);
+router.get('/sunglass', controller.sunglass);
+router.get('/shirt', controller.shirt);
+router.get('/dress', controller.dress);
+
 
 //router.post('/', controller.create);
 //router.put('/:id', controller.update);
