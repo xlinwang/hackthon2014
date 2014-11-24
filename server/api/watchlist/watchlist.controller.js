@@ -44,8 +44,8 @@ exports.addItem = function(req, res) {
 
         console.log( "status: " + response.statusCode );
         var buffer = "";
-        res.on( "data", function( data ) { buffer = buffer + data; } );
-        res.on( "end", function( data ) { console.log( 'buffer ' + buffer ); } );
+        response.on( "data", function( data ) { buffer = buffer + data; } );
+        response.on( "end", function( data ) { console.log( 'buffer ' + buffer ); } );
 
     });
 
