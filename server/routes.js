@@ -12,8 +12,10 @@ module.exports = function(app) {
   app.use('/api/things', require('./api/thing'));
   app.use('/api/alertdef',require('./api/alertdef'));
   app.use('/api/events',require('./api/events'));
-  
-  // All undefined asset or api routes should return a 404
+  app.use('/api/search',require('./api/search'));
+
+
+    // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);
 
