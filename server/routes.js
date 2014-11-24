@@ -13,6 +13,7 @@ module.exports = function(app) {
   app.use('/api/alertdef',require('./api/alertdef'));
   app.use('/api/events',require('./api/events'));
   app.use('/api/search',require('./api/search'));
+  app.use('/api/watchlist',require('./api/watchlist'));
 
 
     // All undefined asset or api routes should return a 404
