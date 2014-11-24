@@ -11,7 +11,7 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/handbag', controller.handbag);
 router.get('/sunglass', controller.sunglass);
-router.get('/shirt', controller.shirt);
+router.get('/watch', controller.watch);
 router.get('/dress', controller.dress);
 
 
