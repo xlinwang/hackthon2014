@@ -12,7 +12,7 @@ router.get('/', controller.index);
 router.get('/handbag', controller.handbag);
 router.get('/sunglass', controller.sunglass);
 router.get('/watch', controller.watch);
-router.get('/dress', controller.dress);
+router.get('/shoe', controller.shoe);
 
 
 //router.post('/', controller.create);
