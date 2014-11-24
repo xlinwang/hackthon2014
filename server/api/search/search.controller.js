@@ -17,8 +17,9 @@ exports.handbag = function(req, res) {
         "count" :   10,
         "items" :   [
             {
-                itemId:   ["131326518221"],
+                itemId:   "131326518221",
                 title:    ["New Womens Leather Fashion Messenger Handbag Lady Shoulder Bag Totes Purse Hobo"],
+                price:  "13.99",
                 galleryURL: [
                     "http://thumbs2.ebaystatic.com/pict/131326518221404000000001_1.jpg"
                 ],
@@ -38,9 +39,10 @@ exports.handbag = function(req, res) {
                 ]
             },
             {
-                "itemId": [
+                "itemId":
                     "251722263135"
-                ],
+                ,
+                price:  "13.99",
                 "title": [
                     "Women's Fashion Designer Handbag, MSRP $42.95 Faux Leather, Brand New with Tags!"
                 ],
@@ -52,12 +54,13 @@ exports.handbag = function(req, res) {
                 ]
 
             },{
-                itemId: [
+                itemId:
                     "381058566451"
-                ],
+                ,
                 title: [
                     "NWT Vera Bradley Hipster in English Rose Free USA Shipping"
                 ],
+                price:  "13.99",
                 galleryURL: [
                     "http://thumbs4.ebaystatic.com/m/m5mfv3iMAP6ClcOCxop3UXg/140.jpg"
                 ],
@@ -66,9 +69,9 @@ exports.handbag = function(req, res) {
                     "http://i.ebayimg.com/00/s/NzUyWDg4Nw==/z/MbEAAOSw0vBUZkNj/$_1.JPG?set_id=880000500F"
                 ]
             },{
-                itemId: [
+                itemId:
                     "131352388209"
-                ],
+                ,
                 title: [
                     "Michael Kors Small Black Leather Purse"
                 ],
@@ -83,12 +86,13 @@ exports.handbag = function(req, res) {
                     "http://i.ebayimg.com/00/s/MTA2NlgxNjAw/z/F5wAAOSw2XFUafQ0/$_1.JPG?set_id=880000500F"
                 ]
             },{
-                itemId: [
+                itemId:
                     "251724953604"
-                ],
+                ,
                 title: [
                     "NWT Vera Bradley Retired Sittin in a Tree Bowler Sachel Bag & Wristlet Set"
                 ],
+                price:  "13.99",
                 galleryURL: [
                     "http://thumbs1.ebaystatic.com/m/mLgYuArB0xT2sLybkBMdpHA/140.jpg"
                 ],
@@ -99,12 +103,13 @@ exports.handbag = function(req, res) {
                     "http://i.ebayimg.com/00/s/NjQwWDY0MA==/z/5MgAAOSw54xUYjNy/$_1.JPG?set_id=8800005007F"
                 ]
             },{
-                itemId: [
+                itemId:
                     "131352388405"
-                ],
+                ,
                 title: [
                     " TORY BURCH THEA CROSSBODY CHAIN wildflower LEATHER BAG $375"
                 ],
+                price:  "13.99",
                 galleryURL: [
                     "http://thumbs2.ebaystatic.com/m/m1hzkBehpN3B2SWrqteC02w/140.jpg"
                 ],
@@ -118,12 +123,13 @@ exports.handbag = function(req, res) {
                     "http://i.ebayimg.com/00/s/ODAxWDkxNA==/z/jycAAOSwF1dUTl4b/$_12.JPG?set_id=880000500F"
                 ]
             },{
-                itemId: [
+                itemId:
                     "381020757876"
-                ],
+                ,
                 title: [
                     "New Women Satchel Bag fashion Tote Messenger leather purse shoulder handbag"
                 ],
+                price:  "13.99",
                 galleryURL: [
                     "http://thumbs1.ebaystatic.com/m/mfdG7Zb8pS_PyUFEOWV4XcQ/140.jpg"
                 ],
@@ -140,12 +146,13 @@ exports.handbag = function(req, res) {
                     "http://i.ebayimg.com/00/s/MTAwMVgxMDAx/z/8esAAOSwq7JUKMKY/$_1.JPG?set_id=8800005007"
                 ]
             },{
-                itemId: [
+                itemId:
                     "291301064192"
-                ],
+                ,
                 title: [
                     "Tory Burch Dena Foldover Messenger Bag Leather Crossbody/Clutch Green NICE"
                 ],
+                price:  "13.99",
                 galleryURL: [
                     "http://thumbs1.ebaystatic.com/m/mqGBlaJbKg4f3LVsyAlkeyw/140.jpg"
                 ],
@@ -163,12 +170,13 @@ exports.handbag = function(req, res) {
                     "http://i.ebayimg.com/00/s/NjAxWDgwMA==/z/nhkAAOSwg3FUbMLF/$_1.JPG?set_id=880000500F"
                 ]
             },{
-                itemId: [
+                itemId:
                     "181590147625"
-                ],
+                ,
                 title: [
                     "Gorgeous Chanel Purse "
                 ],
+                price:  "13.99",
                 galleryURL: [
                     "http://thumbs2.ebaystatic.com/m/mKiS8YX5w9zWaI6Q2F-Qcwg/140.jpg"
                 ],
@@ -184,12 +192,13 @@ exports.handbag = function(req, res) {
                     "http://i.ebayimg.com/00/s/MTIwMFgxNjAw/z/3MMAAOSwaNBUce2H/$_1.JPG?set_id=880000500F"
                 ]
             },{
-                itemId: [
+                itemId:
                     "171428910768"
-                ],
+                ,
                 title: [
                     "New Ladies Womens Hobo PU Leather Handbag Shoulder Crossbody Messenger Bag Purse"
                 ],
+                price:  "13.99",
                 galleryURL: [
                     "http://thumbs1.ebaystatic.com/m/mq634KmzAy1tmT14IKB_-1Q/140.jpg"
                 ],
